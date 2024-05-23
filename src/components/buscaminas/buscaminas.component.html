@@ -1,1 +1,31 @@
-<p>buscaminas works!</p>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>BUSCAMINAS</title>	
+	<link rel="stylesheet" type="text/css" href="buscaminas.component.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<body oncontextmenu="return false">
+	<br><br>
+	<input type="number" id="numFilas" min="4" value="0" style="display: none;">
+	<br><br>
+	<input type="number" id="numColumnas" min="4" value="0" style="display: none;">
+	<br><br>
+	<label class="dificultad">Dificultad: </label>
+	<select id="dificultad">
+		<option value="0.1">Fácil</option>
+		<option value="0.15">Medio</option>
+		<option value="0.2">Difícil</option>
+	</select>
+	<br><br>
+	<button onclick="crearTablero(5, 5);">Pequeño</button>
+	<button onclick="crearTablero(10, 10);">Sencillo</button>
+    <button onclick="crearTablero(15, 15);">Medio</button>
+    <button onclick="crearTablero(20, 20);">Grande</button>
+	<button onclick="nuevoJuego();">Generar Tabla</button>
+	<br><br>
+	<table cellspacing="0" cellpadding="0" id="tablero"></table>
+	<script type="text/javascript" src="BuscaminasFinal.js"></script>
+</body>
+</html>

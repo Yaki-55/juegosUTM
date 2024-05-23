@@ -1,0 +1,44 @@
+*{
+	transition: all 1s;
+	box-sizing: border-box;
+}
+
+body{
+	text-align: center;
+	font-family: calibri;
+	margin: 0;
+	padding: 0;
+	user-select: none;
+	background:#13905D ; /*4495E*/
+
+}
+table{
+	background: slategray;/*color de tabla*/
+	margin: 20px auto; /*centrar la tabla*/
+}
+td{
+	border: rgb(0,0,0,0.25) 1px solid;/*border de celdas*/
+	text-align: center;
+	font-size: 120%;
+	color: white;
+}
+
+label{
+	font-size: 20px;
+	font-family: "Open Sans";
+	/*background-color: white;*/
+}
+
+#juego-nuevo,td{
+	box-shadow: inset 3px 3px 0 0 rgba(255,255,255,0.5),inset -3px -3px 0 0 rgba(0,0,0,0.5);
+}
+
+#juego-nuevo{
+	padding: 10px;
+	margin: 10px;
+}
+
+#juego-nuevo,button {
+	background: grey;
+	cursor: pointer;
+}
