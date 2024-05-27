@@ -112,6 +112,12 @@ export class AjedrezComponent {
       [0,0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0,0]
     ];
+    // 1: Rey
+    // 2: Reina
+    // 3: Torre
+    // 4: Alfil
+    // 5: Caballo
+    // 6: Peon
        
     const color = 0x404040;
     const intensity = 1;
@@ -577,7 +583,7 @@ export class AjedrezComponent {
       renderer.render(scene, camera);
     }
     function dibujaEscenario(){
-      var color= true;
+      var color= false;
       for(var c=0; c<8; c++){
         for(var r=0; r<8; r++){
           if(color==true){
@@ -826,9 +832,13 @@ export class AjedrezComponent {
             piezasblancas[x_old][y_old]=7
             if(y_new == 2){
                 torreB1.position.set(3*tamCubo,1.1,x_new*tamCubo)
+                piezasblancas[7][0]=0
+                piezasblancas[7][3]=8
             }
             if(y_new == 6){
                 torreB2.position.set(5*tamCubo,1.1,x_new*tamCubo)
+                piezasblancas[7][7]=0
+                piezasblancas[7][5]=8
             }
             animar(x_old,y_old, x_new, y_new);
             bestia.position.set(y_new*tamCubo,1.1,x_new*tamCubo);
@@ -851,9 +861,13 @@ export class AjedrezComponent {
             animar(x_old,y_old, x_new, y_new);
             if(y_new == 2){
                 torreN1.position.set(3*tamCubo,1.1,x_new*tamCubo)
+                piezasnegras[0][0]=0
+                piezasnegras[0][3]=8
             }
             if(y_new == 6){
                 torreN2.position.set(5*tamCubo,1.1,x_new*tamCubo)
+                piezasnegras[0][7]=0
+                piezasnegras[0][5]=8
             }
             bestia.position.set(y_new*tamCubo,1.1,x_new*tamCubo);
             piezasnegras[x_new][y_new]=piezasnegras[x_old][y_old];
@@ -1069,7 +1083,7 @@ export class AjedrezComponent {
       const material = new THREE.MeshPhongMaterial({ color: colorNegras });
       const pieza = new THREE.Mesh(geometry, material);
       pieza.material.transparent=true
-      pieza.material.opacity=0;
+      pieza.material.opacity=.5;
       pieza.position.set(x,1.11,y);
       pieza.userData['draggable']=true;
       pieza.userData['name']='espBlack';

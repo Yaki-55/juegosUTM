@@ -3,15 +3,12 @@
 var	filas=document.getElementById("numFilas").value;
 var	columnas=document.getElementById("numColumnas").value;
 var dificultad = document.getElementById("dificultad").value;
-
 var minas = filas * columnas * dificultad;
-
 var lado=30;
 var marcas=0;
 let tablero = [];
 var enJuego=true;
-var juegoIniciado=false;
-
+var juegoIniciado=false
 
 function nuevoJuego(){
 	reiniciarVariables();
@@ -27,13 +24,11 @@ function facil() {
 	console.log(filas);
     nuevoJuego();
 }
-
 function reiniciarVariables(){
 	marcas=0;
 	enJuego=true;
 	juegoIniciado=false;
 }
-
 function generarTableroHTML() {
 	filas=document.getElementById("numFilas").value;
 	columnas=document.getElementById("numColumnas").value;
@@ -59,13 +54,11 @@ function generarTableroHTML() {
 	tableroHTML.style.height=filas*lado+"px";
 	tableroHTML.style.background = "slategray"
 }
-
 function crearTablero(filas, columnas) {
     document.getElementById("numFilas").value = filas;
     document.getElementById("numColumnas").value = columnas;
     nuevoJuego();
 }
-
 function añadirEventos(){
 
 	for(let f=0;f<filas;f++){
@@ -81,7 +74,6 @@ function añadirEventos(){
 			
 	}
 }
-
 function dobleClic(celda,c,f,me){
 
 	if(!enJuego){
@@ -90,7 +82,6 @@ function dobleClic(celda,c,f,me){
 	abrirArea(c,f);
 	refrescarTablero();
 }
-
 function clicSimple(celda,c,f,me){
 	if(!enJuego){
 		return;
@@ -130,7 +121,6 @@ function clicSimple(celda,c,f,me){
 	}
 	refrescarTablero();
 }
-
 function abrirArea(c,f){
 
 	for(let i=-1;i<=1;i++){
@@ -152,7 +142,6 @@ function abrirArea(c,f){
 		}
 	}
 }
-
 function refrescarTablero(){
 
 	for(let f=0; f<filas; f++){
@@ -188,8 +177,6 @@ function refrescarTablero(){
 	verificarGanador();
 	verificarPerdedor();
 }
-
-
 function verificarGanador(){
 
 	for(let f=0; f<filas; f++){
@@ -209,7 +196,6 @@ function verificarGanador(){
 
 	enJuego=false;
 }
-
 function verificarPerdedor(){
 
 	for(let f=0; f<filas; f++){
@@ -235,14 +221,11 @@ function verificarPerdedor(){
 		}
 	}
 }
-
-
 function generarTableroJuego(){
 	vaciarTablero();
 	ponerMinas();
 	contadorMinas();
 }
-
 function vaciarTablero(){
 
 	tablero=[];
@@ -251,10 +234,7 @@ function vaciarTablero(){
 	}
 
 }
-
-
 function ponerMinas(){
-
 	for(let i=0; i<minas; i++){
 		let c;
 		let f ;
@@ -265,12 +245,7 @@ function ponerMinas(){
 		tablero[c][f]={valor:-1};
 	}
 }
-
-
-
-
 function contadorMinas(){
-
 	for(let f=0 ; f<filas;f++){
 		for(let c=0; c<columnas; c++){
 			if(!tablero[c][f]){
