@@ -1,0 +1,9 @@
+<div style="text-align: center;">
+    <p>Brick Breaker</p>
+    <p>{{gameStatus}}</p>
+    <div>
+        <canvas #brickBreakerCanvas width="750" height="500" id="brickBreakerCanvas"
+            class="brick-breaker-canvas"></canvas>
+    </div>
+    <button type="button" [disabled]="gameOn" (click)="startGame()">Empezar</button>
+</div>
