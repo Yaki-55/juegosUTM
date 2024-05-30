@@ -57,10 +57,10 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
 
 
   ngOnInit(): void {
-    this.context = this.canvas.getContext('2d')!; // Obtén el contexto directamente del canvas
-    this.width = this.canvas.width; 
-    this.height = this.canvas.height;
-    this.highScore = this.getHighScore();
+    // this.context = this.canvas.getContext('2d')!; // Obtén el contexto directamente del canvas
+    // this.width = this.canvas.width; 
+    // this.height = this.canvas.height;
+    // this.highScore = this.getHighScore();
   }
 
   ngAfterViewInit(): void { // Inicializamos canvas y contexto después de que la vista esté lista
