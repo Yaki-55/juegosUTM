@@ -54,13 +54,11 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
   score = 0;
   highScore?: number;
 
-
+  wallHitSound = new Audio('../../assets/audios/break.mp3'); // Reemplaza con tu ruta
+  gameOverSound = new Audio('../../assets/audios/music.mp3');
+  paddleSound = new Audio('../../assets/audios/bigger.mp3');
 
   ngOnInit(): void {
-    // this.context = this.canvas.getContext('2d')!; // Obtén el contexto directamente del canvas
-    // this.width = this.canvas.width; 
-    // this.height = this.canvas.height;
-    // this.highScore = this.getHighScore();
   }
 
   ngAfterViewInit(): void { // Inicializamos canvas y contexto después de que la vista esté lista
@@ -117,7 +115,7 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
     if (this.xPosition !== undefined && this.yPosition !== undefined) { 
       this.context.beginPath();
       this.context.arc(this.xPosition, this.yPosition, this.ballRadius, 0, Math.PI * 2);
-      this.context.fillStyle = 'green';
+      this.context.fillStyle = 'red';
       this.context.fill();
       this.context.closePath();
     }
@@ -125,8 +123,19 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
 
   drawPaddle() {
     this.context.beginPath();
-    this.context.rect(this.paddlePosition!, this.height! - this.paddleHeight, this.paddleWidth, this.paddleHeight);
-    this.context.fillStyle = 'blue';
+
+    // Aplica la clase CSS a la paleta
+    this.context.rect(
+      this.paddlePosition!, 
+      this.height! - this.paddleHeight, 
+      this.paddleWidth, 
+      this.paddleHeight
+    );
+
+    // Obtener estilos calculados y aplicarlos a fillStyle
+    const paddleStyle = getComputedStyle(document.documentElement); 
+    this.context.fillStyle = '#db5908';
+    
     this.context.fill();
     this.context.closePath();
 
@@ -136,6 +145,7 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
         this.paddlePosition = 0;
       }
     } else if (this.movingRight) {
+    
       this.paddlePosition! += 10;
       if (this.paddlePosition! + this.paddleWidth > this.width!) {
         this.paddlePosition = this.width! - this.paddleWidth;
@@ -146,10 +156,11 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
   drawBricks() {
     this.bricks.forEach((row, i) => {
       row.forEach((brick, j) => {
-        if (brick.status === 1) {
+        if (brick.status === 1) {// Solo dibujamos ladrillos visibles
           this.context.beginPath();
           this.context.rect(brick.x, brick.y, this.brickWidth, this.brickHeight);
-          this.context.fillStyle = 'purple';
+          const purpleShades = ['#c5f126', '#00eeff', '#56f326']; // Ejemplos
+          this.context.fillStyle = purpleShades[Math.floor(Math.random() * purpleShades.length)];
           this.context.fill();
           this.context.closePath();
         }
@@ -158,8 +169,8 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
   }
 
   drawScore() {
-    this.context.font = '12px Arial';
-    this.context.fillStyle = 'red';
+    this.context.font = '20px Arial';
+    this.context.fillStyle = 'yellow';
     this.context.fillText(`Score: ${this.score} Highscore: ${this.highScore}`, 8, 20);
   }
 
@@ -169,14 +180,25 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
     } else if (this.yPosition! + this.yOffset > this.height! - this.ballRadius) {
       if (this.xPosition! > this.paddlePosition! && this.xPosition! < this.paddlePosition! + this.paddleWidth) {
         this.yOffset = -this.yOffset;
+        this.wallHitSound.play(); // Sonido al chocar con el paddle
       } else {
         clearInterval(this.interval);
         this.gameStatus = 'Game Over!';
-        this.gameOn = false;
+        this.gameOn = false;  
+
+        // Configurar estilo del texto
+        this.context.font = "50px Arial"; // Tamaño y fuente
+        this.context.fillStyle = "yellow"; // Color amarillo
+
+        // Escribir el texto en el centro de la pantalla (aproximadamente)
+        this.context.fillText(this.gameStatus, this.width! / 2 - 70, this.height! / 2); 
+
+
         if (this.score > this.highScore!) {
           localStorage.setItem('brickBreakerScore', this.score.toString());
           this.highScore = this.score;
         }
+        this.gameOverSound.play(); // Sonido al perder el juego
       }
     }
     if (this.xPosition! + this.xOffset < this.ballRadius || this.xPosition! + this.xOffset > this.width! - this.ballRadius) {
@@ -191,6 +213,7 @@ export class BrickBreakerComponent implements OnInit, AfterViewInit{
           this.yOffset = -this.yOffset;
           brick.status = 0;
           this.score++;
+          this.paddleSound.play(); 
           // ... (lógica de aumento de nivel)
         }
       });
