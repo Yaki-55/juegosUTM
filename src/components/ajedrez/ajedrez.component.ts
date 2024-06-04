@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { ThreeMFLoader } from 'three/examples/jsm/loaders/3MFLoader.js'
 import Swal from 'sweetalert2'
+import { saveAs } from 'file-saver'
 @Component({
   selector: 'app-ajedrez',
   standalone: true,
@@ -91,6 +92,8 @@ export class AjedrezComponent {
     var colorBlancas = 0xFF00FF;
     var colorNegras = 0x00FF00;
     var colorNegro = 0x00FF00;
+
+    const movimientos: string[] = [];
 
     var piezasblancas=[
       [0,0,0,0,0,0,0,0],
@@ -697,7 +700,6 @@ export class AjedrezComponent {
             console.log("y vieja= ", y_old);
           }
 
-
           //NEGRAS
           if(intersects[i].object.parent?.userData['name']=="AlfilNegro" && turno == false){
             dibujaMovimiento(intersects[i].object.parent?.position.x, intersects[i].object.parent?.position.z, 2, 4);
@@ -788,6 +790,7 @@ export class AjedrezComponent {
             piezasblancas[x_old][y_old]=0;
             console.log(piezasblancas);
             tentativas.clear();
+            registrarMovimiento(bestia.userData['name'], x_old, y_old, x_new, y_new);
             turno= !turno;
           }
         if(intersects[0].object.userData['name']=="posiBlack"){
@@ -816,6 +819,7 @@ export class AjedrezComponent {
             piezasnegras[x_new][y_new]=piezasnegras[x_old][y_old];
             piezasnegras[x_old][y_old]=0;
             console.log(piezasnegras);
+            registrarMovimiento(bestia.userData['name'], x_old, y_old, x_new, y_new);
             tentativas.clear();
             turno= !turno;
           }
@@ -845,6 +849,7 @@ export class AjedrezComponent {
             piezasblancas[x_new][y_new]=piezasblancas[x_old][y_old];
             piezasblancas[x_old][y_old]=0;
             console.log(piezasblancas);
+            registrarMovimiento("Enroque", x_old, y_old, x_new, y_new)
             tentativas.clear();
             turno= !turno;
         }
@@ -872,26 +877,36 @@ export class AjedrezComponent {
             bestia.position.set(y_new*tamCubo,1.1,x_new*tamCubo);
             piezasnegras[x_new][y_new]=piezasnegras[x_old][y_old];
             piezasnegras[x_old][y_old]=0;
+            registrarMovimiento("Enroque", x_old, y_old, x_new, y_new);
             tentativas.clear();
             turno= !turno;
         }
         if(intersects[0].object.userData['name']=="enemigo"){
             //var bestia2 = new THREE.Object3D()
-            if(reyN.position.x == intersects[0].object.position.x && reyN.position.z == intersects[0].object.position.z){
+            if (reyN.position.x == intersects[0].object.position.x && reyN.position.z == intersects[0].object.position.z) {
+                let nota = `Jaque Mate, blancas ganan`;
+                movimientos.push(nota);
                 reyN.clear();
                 Swal.fire({
                     title: 'FIN DEL JUEGO',
                     icon: 'info',
                     text: 'Piezas blancas ganan',
-                    confirmButtonText: 'Nuevo Juego'
-                }).then((result:any) => {
-                  /* Read more about isConfirmed, isDenied below */
-                  if (result.isConfirmed) {
-                    location.reload();
-                  } else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info')
-                  }
-                })
+                    confirmButtonText: 'Nuevo Juego',
+                    showDenyButton: true,
+                    denyButtonText: 'Descargar movimientos',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    } else if (result.isDenied) {
+                        // Convertir la lista de movimientos a una cadena de texto
+                        const textoMovimientos = movimientos.join('\n');
+                        // Crear un nuevo Blob con el texto
+                        const blob = new Blob([textoMovimientos], { type: 'text/plain;charset=utf-8' });
+                        // Descargar el archivo
+                        saveAs(blob, 'movimientos.txt');
+                        location.reload();
+                    }
+                });
             }
             if(reinaN.position.x == intersects[0].object.position.x && reinaN.position.z == intersects[0].object.position.z)
                 reinaN.clear();
@@ -953,25 +968,35 @@ export class AjedrezComponent {
             piezasblancas[x_new][y_new]=piezasblancas[x_old][y_old];
             piezasblancas[x_old][y_old]=0;
             console.log(piezasblancas);
+            registrarMovimiento(bestia.userData['name'], x_old, y_old, x_new, y_new);
             tentativas.clear();
             turno= !turno;
         }
         if(intersects[0].object.userData['name']=="enemigo1"){
             if(reyB.position.x == intersects[0].object.position.x && reyB.position.z == intersects[0].object.position.z){
+                let nota = `Jaque Mate, negras ganan`;
+                movimientos.push(nota);
                 reyB.clear();
                 Swal.fire({
                     title: 'FIN DEL JUEGO',
                     icon: 'info',
                     text: 'Piezas negras ganan',
-                    confirmButtonText: 'Nuevo Juego'
-                }).then((result:any) => {
-                  /* Read more about isConfirmed, isDenied below */
-                  if (result.isConfirmed) {
-                    location.reload();
-                  } else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info')
-                  }
-                })
+                    confirmButtonText: 'Nuevo Juego',
+                    showDenyButton: true,
+                    denyButtonText: 'Descargar movimientos',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    } else if (result.isDenied) {
+                        // Convertir la lista de movimientos a una cadena de texto
+                        const textoMovimientos = movimientos.join('\n');
+                        // Crear un nuevo Blob con el texto
+                        const blob = new Blob([textoMovimientos], { type: 'text/plain;charset=utf-8' });
+                        // Descargar el archivo
+                        saveAs(blob, 'movimientos.txt');
+                        location.reload();
+                    }
+                });
             }
             if(reinaB.position.x == intersects[0].object.position.x && reinaB.position.z == intersects[0].object.position.z)
                 reinaB.clear();
@@ -1029,12 +1054,13 @@ export class AjedrezComponent {
             piezasnegras[x_new][y_new]=piezasnegras[x_old][y_old];
             piezasnegras[x_old][y_old]=0;
             console.log(piezasnegras);
+            registrarMovimiento(bestia.userData['name'], x_old, y_old, x_new, y_new);
             tentativas.clear();
             turno= !turno;
         }
         console.log(intersects);
         console.log(intersects[0].object.userData['name']);
-      console.log(pointer);
+        console.log(pointer);
     }
     window.addEventListener('click',detectarClick);
     function draw(){
@@ -2028,6 +2054,14 @@ export class AjedrezComponent {
             }
         }
     }
+
+    //EXTRAS
+    function registrarMovimiento(pieza:any, x_old:any, y_old:any, x_new:any, y_new:any) {
+        let nota = `${pieza} de (${x_old}, ${y_old}) a (${x_new}, ${y_new})`;
+        movimientos.push(nota);
+        console.log(nota);
+    }
+
     //LLAMADAS A FUNCION
     dibujaEscenario();
     cargarModeloOBJ();
