@@ -1,1 +1,40 @@
-<p>laberinto works!</p>
+
+<section id="home">
+    <div class="fila">
+        <div class="der">
+            <h2 class="welcome">¡BIENVENIDO!</h2>
+            <h2 class="laberinto">LABERINTO 3D </h2>
+            <h3 class="parrafo">Elije el nivel con el que deseas jugar</h3>
+        </div>
+    </div>
+    <div>
+        <div class="niveles">
+            <span class="niveles">
+                <img src="../assets/imagenes/nivel1.png" width="200px" height="200px">
+                <p>Navega por el laberinto hasta llegar a la meta marcada.</p>
+            </span>
+            <span class="niveles">
+                <img src="../assets/imagenes/nivel02.png" width="200px" height="200px">
+                <p>Para ganar el juego tendras que pasar por los puntos rojos.</p>
+            </span>
+            <span class="niveles">
+                <img src="../assets/imagenes/nivel03.png" width="200px" height="200px">
+                <p>Navega por el laberinto hasta llegar a la meta marcada.</p>
+            </span>
+        </div>
+        
+        <div class="">
+
+            <span class="botones">
+                <a class='dropdown-trigger btn black' (click)="navigateToNivel1()">Nivel Uno</a>
+            </span>
+            <span class="botones">
+                <a class='dropdown-trigger btn blue' (click)="navigateToNivel2()">Nivel Dos</a>
+            </span>
+            <span class="botones">
+                <a class='dropdown-trigger btn blue' (click)="navigateToNivel3()">Nivel Tres</a>
+            </span>
+
+        </div>
+    </div>
+</section>
