@@ -7,7 +7,7 @@ import { BrickBreakerComponent } from '../components/brick-breaker/brick-breaker
 import { LaberintoN1Component } from '../components/laberinto-n1/laberinto-n1.component';
 import { LaberintoN2Component } from '../components/laberinto-n2/laberinto-n2.component';
 import { LaberintoN3Component } from '../components/laberinto-n3/laberinto-n3.component';
-
+import { InicioComponent } from '../components/inicio/inicio.component';
 export const routes: Routes = [
   { path: 'buscaminas', component: BuscaminasComponent },
   { path: 'ajedrez', component: AjedrezComponent },
@@ -16,4 +16,6 @@ export const routes: Routes = [
   { path: 'laberintoN1', component: LaberintoN1Component },
   { path: 'laberintoN2', component: LaberintoN2Component },
   { path: 'laberintoN3', component: LaberintoN3Component },
+  { path: 'inicio', component: InicioComponent },
+
 ];

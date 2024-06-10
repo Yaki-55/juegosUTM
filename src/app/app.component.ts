@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'juegosUTM';
+  constructor(private router: Router) { }
+
+
 }

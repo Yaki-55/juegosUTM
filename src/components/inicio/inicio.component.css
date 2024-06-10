@@ -1,0 +1,28 @@
+
+
+.text-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* Espacio entre el título y los botones */
+}
+
+.btn-rect {
+  width: 280px; /* Ancho fijo de los botones */
+  height: 100px; /* Altura fija de los botones */
+  margin: 15px; /* Espacio entre los botones */
+  font-size: 24px; /* Tamaño de fuente */
+  border-radius: 0; /* Bordes rectos */
+}
+
+.btn-rect:hover {
+  transform: scale(1.05); /* Efecto de zoom al pasar el ratón */
+}
