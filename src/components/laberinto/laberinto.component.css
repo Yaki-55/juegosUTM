@@ -1,47 +1,20 @@
-/* Estilos generales */
-
-/*body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f0f0f0;
-  color: #981010;
-}*/
 section{
-    /*background:linear-gradient(#1A5276,#585754);
-    color: rgba(126, 126, 126, 0.856);*/
     background-color:#1A5276 ;
       height: 100vh;
   }
-  
-  /* Encabezado 
-  header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-  }
-  */
-  /* Sección principal */
   #home {
     padding: 40px 20px;
     text-align: center;
   }
-  
-  /* Fila de contenido principal */
   .fila {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 40px;
   }
-  
-  /* Sección derecha de la fila */
   .der {
     max-width: 600px;
   }
-  
-  /* Títulos y párrafos */
   h2.welcome {
     font-size: 2.5em;
     margin-bottom: 10px;
@@ -64,22 +37,18 @@ section{
     font-weight: bold;
     
   }
-  
-  /* Contenedor de niveles */
   .niveles {
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-bottom: 30px;
   }
-  
-  /* Estilo para cada nivel */
   .niveles span {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #5c738d;
-    border: 1px solid #641E16;/*#7E5109;*/
+    border: 1px solid #641E16;
     padding: 10px;
     border-radius: 8px;
     transition: transform 0.3s;
@@ -93,36 +62,30 @@ section{
     border-radius: 8px;
     margin-bottom: 10px;
   }
-  
-  /* Botones */
-  .botones {
-    /*display: flex;*/
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+  p{
+    color: black;
+    text-align: center;
+    font-size: 25px;
+
   }
-  
-  .botones a {
-    align-items: center;
-    display: inline-block;
-    /*padding: 10px 20px;*/
-    padding: 15px;
-    color: #1A5276;
-    background-color: #06362c;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    border: 60px solid;
-    text-shadow: 2px 2px 4px rgba(22, 20, 20, 0.5); /* Sombreado */
-  
-  }
-  
-  .botones a:hover {
-    background-color: #0B5345;
-  }
-  
-  /* Ajustes responsivos */
-  @media (max-width: 768px) {
+
+#miBoton {
+  position: absolute;
+  left: 860px;
+  padding: 10px 50px;
+  background-color: #0b4d17;
+  text-shadow: 2px 2px 4px rgba(104, 10, 10, 0.8);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 35px;
+}
+
+#miBoton:hover {
+  background-color: #416848;
+}
+
+@media (max-width: 768px) {
     .fila {
         flex-direction: column;
     }
@@ -130,11 +93,6 @@ section{
     .niveles {
         flex-direction: column;
         gap: 10px;
-    }
-  
-    .botones {
-        flex-direction: column;
-        gap: 20px;
     }
   }
   

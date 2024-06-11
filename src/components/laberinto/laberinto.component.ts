@@ -23,6 +23,9 @@ export class LaberintoComponent {
     this.router.navigate(['/laberinto/laberintoN3']);
   } 
   */
+  navigateToInicio() {
+    this.router.navigate(['/inicio']);
+  }
   navigateToNivel1() {
     this.router.navigate(['/laberintoN1']);
   }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
+import { Router } from '@angular/router';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Swal from 'sweetalert2';
 
@@ -10,8 +11,8 @@ import Swal from 'sweetalert2';
   templateUrl: './laberinto-n3.component.html',
   styleUrl: './laberinto-n3.component.css'
 })
-export class LaberintoN3Component implements OnInit{
- 
+export class LaberintoN3Component implements OnInit, OnDestroy{
+  constructor(private router: Router) {}
 
   private M: number[][] = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -53,12 +54,21 @@ export class LaberintoN3Component implements OnInit{
   private renderer!: THREE.WebGLRenderer;
   private controls!: OrbitControls;
   private esfera!: THREE.Mesh;
+  private timer: number = 0;
+  private intervalId: any;
+  private timerStarted: boolean = false;
+
 
   ngOnInit(): void {
     this.initScene();
+    this.positionButton(); // Posicionar el botón
     window.addEventListener('resize', () => this.onWindowResize(), false);
   }
-
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
   private initScene(): void {
     this.canvas = document.getElementById('miCanvas') as HTMLCanvasElement;
     this.scene.background = new THREE.Color(0x128684);
@@ -79,6 +89,31 @@ export class LaberintoN3Component implements OnInit{
     window.addEventListener('keydown', (e) => this.teclado(e));
 
     this.animate();
+  }
+  
+  private startTimer(): void {
+    this.intervalId = setInterval(() => {
+      this.timer++;
+      const timeScoreElement = document.getElementById('timeScore');
+      if (timeScoreElement) {
+        timeScoreElement.innerText = `Time: ${this.timer}s`;
+      }
+    }, 1000);
+  }
+
+  private positionButton(): void {
+    const canvas = document.getElementById('miCanvas') as HTMLCanvasElement;
+    const button = document.getElementById('miBoton') as HTMLButtonElement;
+
+    // Posicionar el botón dentro del canvas
+    const rect = canvas.getBoundingClientRect();
+    button.style.top = (rect.top + 100) + 'px';  
+    button.style.left = (rect.left + 80) + 'px'; 
+  }
+
+
+  InicioLaberinto() {
+    this.router.navigate(['/laberinto']);
   }
 
   private addBase(): void {
@@ -143,14 +178,23 @@ export class LaberintoN3Component implements OnInit{
   private teclado(e: KeyboardEvent): void {
     e.preventDefault();
     const key = e.keyCode;
+  
+    if (!this.timerStarted && (key === this.keyCode.RIGHT_ARROW || key === this.keyCode.LEFT_ARROW || key === this.keyCode.UP_ARROW || key === this.keyCode.DOWN_ARROW)) {
+      this.startTimer();
+      this.timerStarted = true;
+    } 
 
     const CX = Math.trunc((this.esfera.position.x + 19) / 2);
     const CZ = Math.trunc((19 - this.esfera.position.z) / 2);
 
   
     if (this.M[CZ][CX] == 3) {
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+      }
       Swal.fire({
         title: 'Felicidades, ganaste el Nivel 3!',
+        text: `Tiempo: ${this.timer}s.`,
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'ok'
       }).then((result) => {
