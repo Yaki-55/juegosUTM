@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Swal from 'sweetalert2';
@@ -10,7 +11,8 @@ import Swal from 'sweetalert2';
   templateUrl: './laberinto-n1.component.html',
   styleUrl: './laberinto-n1.component.css'
 })
-export class LaberintoN1Component implements OnInit {
+export class LaberintoN1Component implements OnInit, OnDestroy {
+  constructor(private router: Router) {}
 
   private M: number[][] = [
     [1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],//1
@@ -52,10 +54,20 @@ export class LaberintoN1Component implements OnInit {
   private renderer!: THREE.WebGLRenderer;
   private controls!: OrbitControls;
   private esfera!: THREE.Mesh;
+  private timer: number = 0;
+  private intervalId: any;
+  private timerStarted: boolean = false;
 
   ngOnInit(): void {
     this.initScene();
+    //this.startTimer();
+    this.positionButton(); // Posicionar el botón
     window.addEventListener('resize', () => this.onWindowResize(), false);
+  }
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   private initScene(): void {
@@ -78,6 +90,31 @@ export class LaberintoN1Component implements OnInit {
     window.addEventListener('keydown', (e) => this.teclado(e));
 
     this.animate();
+  }
+
+  private startTimer(): void {
+    this.intervalId = setInterval(() => {
+      this.timer++;
+      const timeScoreElement = document.getElementById('timeScore');
+      if (timeScoreElement) {
+        timeScoreElement.innerText = `Time: ${this.timer}s`;
+      }
+    }, 1000);
+  }
+
+  private positionButton(): void {
+    const canvas = document.getElementById('miCanvas') as HTMLCanvasElement;
+    const button = document.getElementById('miBoton') as HTMLButtonElement;
+
+    // Posicionar el botón dentro del canvas
+    const rect = canvas.getBoundingClientRect();
+    button.style.top = (rect.top + 100) + 'px'; 
+    button.style.left = (rect.left + 80) + 'px';  
+  }
+
+
+  InicioLaberinto() {
+    this.router.navigate(['/laberinto']);
   }
 
   private addBase(): void {
@@ -142,19 +179,32 @@ export class LaberintoN1Component implements OnInit {
     e.preventDefault();
     const key = e.keyCode;
 
+    if (!this.timerStarted && (key === this.keyCode.RIGHT_ARROW || key === this.keyCode.LEFT_ARROW || key === this.keyCode.UP_ARROW || key === this.keyCode.DOWN_ARROW)) {
+      this.startTimer();
+      this.timerStarted = true;
+    }
+
     const CX = Math.trunc((this.esfera.position.x + 19) / 2);
     const CZ = Math.trunc((19 - this.esfera.position.z) / 2);
 
   
     if (this.M[CZ][CX] == 2) {
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+      }
       Swal.fire({
           title: 'Felicidades Ganastes el Nivel Uno ',
-          text: "¿Deseas continuar con el siguiente Nivel?",
+          //text: "¿Deseas continuar con el siguiente Nivel?",
+          text: `Tiempo: ${this.timer}s.
+          ¿Deseas continuar con el siguiente Nivel?`,
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
           cancelButtonText: 'NO',
-          confirmButtonText: 'YES'
+          confirmButtonText: 'YES',
+          customClass: {
+            title: 'my-swalert-title'
+          }
         }).then((result:any) => {
           if (result.isConfirmed) {
             window.location.href = '/laberintoN2'

@@ -9,20 +9,22 @@
     </div>
     <div>
         <div class="niveles">
-            <span class="niveles">
+            <span class="niveles" (click)="navigateToNivel1()">
                 <img src="../assets/imagenes/nivel1.png" width="200px" height="200px">
                 <p>Navega por el laberinto hasta llegar a la meta marcada.</p>
             </span>
-            <span class="niveles">
+            <span class="niveles" (click)="navigateToNivel2()">
                 <img src="../assets/imagenes/nivel02.png" width="200px" height="200px">
                 <p>Para ganar el juego tendras que pasar por los puntos rojos.</p>
             </span>
-            <span class="niveles">
+            <span class="niveles" (click)="navigateToNivel3()">
                 <img src="../assets/imagenes/nivel03.png" width="200px" height="200px">
                 <p>Navega por el laberinto hasta llegar a la meta marcada.</p>
             </span>
         </div>
-        
+
+        <button id="miBoton" (click)="navigateToInicio()">Inicio</button>
+<!--        
         <div class="">
 
             <span class="botones">
@@ -36,5 +38,6 @@
             </span>
 
         </div>
+-->
     </div>
 </section>
