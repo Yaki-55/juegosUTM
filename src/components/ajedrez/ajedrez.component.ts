@@ -5,6 +5,9 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { ThreeMFLoader } from 'three/examples/jsm/loaders/3MFLoader.js'
 import Swal from 'sweetalert2'
 import { saveAs } from 'file-saver'
+import { Router, NavigationStart } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-ajedrez',
   standalone: true,
@@ -12,7 +15,11 @@ import { saveAs } from 'file-saver'
   templateUrl: './ajedrez.component.html',
   styleUrl: './ajedrez.component.css'
 })
-export class AjedrezComponent {
+export class AjedrezComponent implements OnInit {
+
+  constructor(private router: Router) {}
+  private destroy$: Subject<void> = new Subject<void>();
+
   ngOnInit(): void{
     var x;
     var y;
@@ -92,7 +99,6 @@ export class AjedrezComponent {
     var colorBlancas = 0xFF00FF;
     var colorNegras = 0x00FF00;
     var colorNegro = 0x00FF00;
-
     const movimientos: string[] = [];
 
     var piezasblancas=[
@@ -138,7 +144,6 @@ export class AjedrezComponent {
       controls.update();
       renderer.render(scene, camera)
     }
-
     //FICHAS BLANCAS
     function reyBlanco(x:any, y:any){
       const objLoader = new OBJLoader();
@@ -1070,6 +1075,7 @@ export class AjedrezComponent {
         console.log(pointer);
     }
     window.addEventListener('click',detectarClick);
+    window.addEventListener('unload',destroy);
     function draw(){
       dibujaBlanco();
       dibujaNegro();
@@ -2069,7 +2075,6 @@ export class AjedrezComponent {
         console.log(nota);
         actualizarTablaMovimientos();
     }
-
     function actualizarTablaMovimientos() {
         const tabla = document.getElementById('tabla-movimientos') as HTMLTableElement;
         const tbody = tabla.getElementsByTagName('tbody')[0];
@@ -2081,6 +2086,15 @@ export class AjedrezComponent {
             cell.innerText = movimiento;
         });
     }
+    function destroy():void{
+        renderer.domElement.remove();
+        scene.clear();
+    }
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe(event => {
+        if (event instanceof NavigationStart && event.url === '/inicio') {
+          destroy();
+        }
+    });
 
     //LLAMADAS A FUNCION
     dibujaEscenario();
@@ -2088,52 +2102,7 @@ export class AjedrezComponent {
     draw();
     animate();
   }
-  
-
-  /*movimientos: string[] = [];
-
-  constructor() {}
-
-  ngOnInit(): void {
-    this.generarTablero();
-    // Ejemplo de movimientos iniciales
-    this.registrarMovimiento('Peón', 1, 2, 1, 3);
-    this.registrarMovimiento('Caballo', 2, 1, 3, 3);
+  navigateToInicio() {
+    this.router.navigate(['/inicio']);
   }
-
-  registrarMovimiento(pieza: string, x_old: number, y_old: number, x_new: number, y_new: number) {
-    let nota = `${pieza} de (${x_old}, ${y_old}) a (${x_new}, ${y_new})`;
-    this.movimientos.push(nota);
-    console.log(nota);
-    this.actualizarTablaMovimientos();
-  }
-
-  actualizarTablaMovimientos() {
-    const tabla = document.getElementById('tabla-movimientos') as HTMLTableElement;
-    const tbody = tabla.getElementsByTagName('tbody')[0];
-    tbody.innerHTML = ''; // Limpiar el contenido del tbody
-
-    this.movimientos.forEach((movimiento) => {
-      let row = tbody.insertRow();
-      let cell = row.insertCell();
-      cell.innerText = movimiento;
-    });
-  }
-
-  generarTablero() {
-    const tablero = document.getElementById('tablero') as HTMLElement;
-    const filas = 8;
-    const columnas = 8;
-    let esBlanco = true;
-
-    for (let i = 0; i < filas; i++) {
-      for (let j = 0; j < columnas; j++) {
-        let casilla = document.createElement('div');
-        casilla.className = `square ${esBlanco ? 'white' : 'black'}`;
-        tablero.appendChild(casilla);
-        esBlanco = !esBlanco;
-      }
-      esBlanco = !esBlanco;
-    }
-  }*/
 }

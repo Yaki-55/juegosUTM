@@ -17,5 +17,5 @@ export const routes: Routes = [
   { path: 'laberintoN2', component: LaberintoN2Component },
   { path: 'laberintoN3', component: LaberintoN3Component },
   { path: 'inicio', component: InicioComponent },
-
+  { path: '', redirectTo: '/inicio', pathMatch: 'full' }
 ];

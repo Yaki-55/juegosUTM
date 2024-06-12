@@ -7,11 +7,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent implements AfterViewInit {
+  private One: boolean = true
+  constructor(private router: Router, private renderer: Renderer2, private el: ElementRef) {
 
-  constructor(private router: Router, private renderer: Renderer2, private el: ElementRef) { }
+  }
 
   ngAfterViewInit(): void {
     this.createParticles();
+    
   }
 
   redirectToLaberinto(): void {

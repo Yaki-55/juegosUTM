@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, PLATFORM_ID, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface Brick {
   x: number;
@@ -17,14 +18,17 @@ interface Brick {
 })
 export class BrickBreakerComponent implements OnInit, AfterViewInit{
   
+  
   @ViewChild('brickBreakerCanvas') canvasRef!: ElementRef<HTMLCanvasElement>; // ViewChild no nulo
   private canvas!: HTMLCanvasElement;
   private context!: CanvasRenderingContext2D;
 
   bricks: Brick[][] = []; // Arreglo bidimensional para los ladrillos
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {} 
-
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router) {} 
+  navigateToInicio() {
+    this.router.navigate(['/inicio']);
+  }
 
 
   //context: any;

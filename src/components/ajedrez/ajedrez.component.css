@@ -18,3 +18,18 @@
   .white {
     background-color: white;
   }
+  #miBoton {
+    position: absolute;
+    left: 860px;
+    padding: 10px 50px;
+    background-color: #0b4d17;
+    text-shadow: 2px 2px 4px rgba(104, 10, 10, 0.8);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 35px;
+  }
+  
+  #miBoton:hover {
+    background-color: #416848;
+  }

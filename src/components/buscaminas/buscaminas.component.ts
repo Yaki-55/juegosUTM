@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buscaminas',
@@ -15,7 +16,11 @@ export class BuscaminasComponent {
   tablero: any[] = [];
   enJuego: boolean = true;
   juegoIniciado: boolean = false;
+  constructor( private router: Router) {}
 
+  navigateToInicio() {
+    this.router.navigate(['/inicio']);
+  }
   nuevoJuego() {
     this.reiniciarVariables();
     this.generarTableroHTML();
@@ -23,19 +28,16 @@ export class BuscaminasComponent {
     this.añadirEventos();
     this.refrescarTablero();
   }
-
   crearTablero(filas: number, columnas: number) {
     this.filas = filas;
     this.columnas = columnas;
     this.nuevoJuego();
   }
-
   reiniciarVariables() {
     this.marcas = 0;
     this.enJuego = true;
     this.juegoIniciado = false;
   }
-
   generarTableroHTML() {
     this.dificultad = parseFloat((document.getElementById('dificultad') as HTMLSelectElement).value);
     this.minas = this.filas * this.columnas * this.dificultad;
@@ -59,7 +61,6 @@ export class BuscaminasComponent {
     tableroHTML.style.height = this.filas * this.lado + 'px';
     tableroHTML.style.background = 'slategray';
   }
-
   añadirEventos() {
     for (let f = 0; f < this.filas; f++) {
       for (let c = 0; c < this.columnas; c++) {
@@ -70,8 +71,6 @@ export class BuscaminasComponent {
       }
     }
   }
-  
-
   marcarCelda(celda: HTMLTableCellElement, c: number, f: number, me: MouseEvent) {
     me.preventDefault(); // Evita que aparezca el menú contextual del navegador
     if (!this.enJuego) return;
@@ -86,13 +85,11 @@ export class BuscaminasComponent {
     
     this.refrescarTablero();
   }
-
   dobleClic(celda: HTMLTableCellElement, c: number, f: number, me: MouseEvent) {
     if (!this.enJuego) return;
     this.abrirArea(c, f);
     this.refrescarTablero();
   }
-
   clicSimple(celda: HTMLTableCellElement, c: number, f: number, me: MouseEvent) {
     if (!this.enJuego || this.tablero[c][f].estado === 'descubierto') return;
 
@@ -118,7 +115,6 @@ export class BuscaminasComponent {
     }
     this.refrescarTablero();
   }
-
   abrirArea(c: number, f: number) {
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
@@ -132,7 +128,6 @@ export class BuscaminasComponent {
       }
     }
   }
-
   refrescarTablero() {
     for (let f = 0; f < this.filas; f++) {
       for (let c = 0; c < this.columnas; c++) {
@@ -170,11 +165,6 @@ export class BuscaminasComponent {
     this.verificarGanador();
     this.verificarPerdedor();
   }
-  
-  
-  
-  
-
   verificarGanador() {
     for (let f = 0; f < this.filas; f++) {
       for (let c = 0; c < this.columnas; c++) {
@@ -186,7 +176,6 @@ export class BuscaminasComponent {
     tableroHTML.style.background = '#132A90';
     this.enJuego = false;
   }
-
   verificarPerdedor() {
     for (let f = 0; f < this.filas; f++) {
       for (let c = 0; c < this.columnas; c++) {
@@ -210,20 +199,17 @@ export class BuscaminasComponent {
       }
     }
   }
-
   generarTableroJuego() {
     this.vaciarTablero();
     this.ponerMinas();
     this.contadorMinas();
   }
-
   vaciarTablero() {
     this.tablero = [];
     for (let c = 0; c < this.columnas; c++) {
       this.tablero.push([]);
     }
   }
-
   ponerMinas() {
     for (let i = 0; i < this.minas; i++) {
       let c: number;
@@ -235,7 +221,6 @@ export class BuscaminasComponent {
       this.tablero[c][f] = { valor: -1 };
     }
   }
-
   contadorMinas() {
     for (let f = 0; f < this.filas; f++) {
       for (let c = 0; c < this.columnas; c++) {
