@@ -6,7 +6,15 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
+.texto {
+  font-size: 85px;
+  font-style: bold;
+  color: rgb(5, 5, 5);
+  /* Centrado horizontal y vertical */
+  display: flex; /* Activa flexbox */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
 .button-container {
   display: flex;
   flex-wrap: wrap;
@@ -14,7 +22,9 @@
   align-items: center;
   margin-top: 20px; /* Espacio entre el título y los botones */
 }
-
+.colorfull{
+  background-color: rgb(199, 208, 208);
+}
 .btn-rect {
   width: 280px; /* Ancho fijo de los botones */
   height: 100px; /* Altura fija de los botones */
@@ -25,4 +35,34 @@
 
 .btn-rect:hover {
   transform: scale(1.05); /* Efecto de zoom al pasar el ratón */
+}
+
+.animated-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: #000;
+  overflow: hidden;
+}
+
+/* Estilo de las partículas */
+.particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: white;
+  border-radius: 50%;
+  animation: move 10s linear infinite;
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    transform: translateY(100vh) translateX(calc(100vw * var(--direction)));
+  }
 }

@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 body {
     font-family: 'Press Start 2P', cursive; /* Tipografía gamer */
-    background-color: #353535; /* Fondo negro */
     color: #676767; /* Texto blanco */
-    margin: 0; /* Eliminar márgenes por defecto */
+    margin:rgb(255, 255, 255)
 }

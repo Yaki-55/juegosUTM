@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,13 +6,12 @@ import { Router } from '@angular/router';
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
-export class InicioComponent implements OnInit {
+export class InicioComponent implements AfterViewInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private renderer: Renderer2, private el: ElementRef) { }
 
-  ngOnInit(): void {
-    // Opcional: Redirige automáticamente a /laberinto
-    // this.router.navigate(['/laberinto']);
+  ngAfterViewInit(): void {
+    this.createParticles();
   }
 
   redirectToLaberinto(): void {
@@ -46,5 +45,22 @@ export class InicioComponent implements OnInit {
   redirectToHeroDetail(): void {
     this.router.navigate(['/hero-detail']);
   }
-}
 
+  createParticles(): void {
+    const container = this.el.nativeElement.querySelector('.animated-bg');
+    if (container) {
+      for (let i = 0; i < 100; i++) {
+        const particle = this.renderer.createElement('div');
+        this.renderer.addClass(particle, 'particle');
+        this.renderer.setStyle(particle, 'top', `${Math.random() * 100}vh`);
+        this.renderer.setStyle(particle, 'left', `${Math.random() * 100}vw`);
+        this.renderer.setStyle(particle, 'animation-duration', `${Math.random() * 10 + 5}s`);
+        this.renderer.setStyle(particle, 'animation-delay', `${Math.random() * 5}s`);
+        this.renderer.setStyle(particle, '--direction', Math.random() > 0.5 ? '1' : '-1');
+        this.renderer.appendChild(container, particle);
+      }
+    } else {
+      console.error('Contenedor .animated-bg no encontrado');
+    }
+  }
+}
